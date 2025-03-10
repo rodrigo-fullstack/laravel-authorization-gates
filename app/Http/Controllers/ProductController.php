@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
@@ -21,8 +23,27 @@ class ProductController extends Controller
         return view('product-create');
     }
     
-    public function store(){
-        return ;
+    public function store(Request $request){
+        // -----------------------
+        // from Auth Facades
+        
+        // if(Auth::user()->can('user_admin')){
+        //     return "You can create products.";
+        // }
+        // -----------------------
+        
+        // -----------------------
+        // from Gate Facades
+        if(Gate::allows('user_admin')){
+            return "You can create products.";
+        }
+
+        // if(Gate::denies('user_admin')){
+        //     return "You can't create products.";
+        // }
+        // -----------------------
+        
+        return "You can't create products";
     }
 
     public function __get($property){
