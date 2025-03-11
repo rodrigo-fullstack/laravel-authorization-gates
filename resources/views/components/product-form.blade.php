@@ -1,13 +1,31 @@
-<form method="POST" class="bg-white p-6 rounded-lg shadow-md w-full max-w-md" action='{{ route('product.create.submit') }}'>
+@if($from === 'create')
+
+    <form method="POST" class="bg-white p-6 rounded-lg shadow-md w-full max-w-md" action='{{ route('product.create.submit') }}'>
+    
+@else
+    <form method="POST" class="bg-white p-6 rounded-lg shadow-md w-full max-w-md" action='{{ route('product.update.submit') }}'>
+@endif
     @csrf
     <div class="mb-4">
         <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name</label>
-        <input type="text" name="name" id="name" class="shadow-sm border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Enter name">
+        @if($from === 'update')
+            <input type="text" name="name" id="name" class="shadow-sm border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Enter name" value="{{ old('name', $product['name']) }}">
+        
+            <input type="hidden" name="id" value="{{ $product['id'] }}">
+
+        @else
+            <input type="text" name="name" id="name" class="shadow-sm border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Enter name" value="{{ old('name') }}">
+        @endif
     </div>
     
     <div class="mb-6">
         <label for="value" class="block text-gray-700 text-sm font-bold mb-2">Value</label>
-        <input type="text" name="value" id="value" class="shadow-sm border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Enter value">
+        @if($from === 'update')
+            <input type="text" name="value" id="value" class="shadow-sm border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Enter value" value="{{ old('value', $product['value']) }}">
+        
+        @else
+            <input type="text" name="value" id="value" class="shadow-sm border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Enter value" value="{{ old('value') }}">
+        @endif
     </div>
     
     <div class="flex items-center justify-center justify-end">
@@ -16,13 +34,11 @@
         </button>
     </div>
     
-    
+    <div class="flex items-center justify-center">
         @if($errors->any())
-            <div class="block items-center justify-center bg-red-600 mt-3">
-                @foreach($errors->all() as $error)
-                    <div class="flex text-white">{{ $error }}</div>
-                @endforeach
-            </div>
+            @foreach($errors->all() as $error)
+                <div class="text-black">{{ $error }}</div>
+            @endforeach
         @endif
-    
+    </div>
 </form>
