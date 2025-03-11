@@ -94,6 +94,7 @@ class ProductController extends Controller
             'data' => [
                 'success' => true,
                 'message' => 'Product created successfully',
+            'from' => From::Create,
                 'product' => $product->toArray()
             ]
         ]));
