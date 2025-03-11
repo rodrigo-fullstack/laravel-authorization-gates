@@ -107,5 +107,45 @@ class ProductController extends Controller
         
         return $this->$property;
     }
+    public function change(?string $data = null){
+        // -----------------------
+        // from Auth Facades
+        
+        // if(Auth::user()->can('user_admin')){
+        //     return "You can create products.";
+        // }
+        // -----------------------
+        
+        // -----------------------
+        // from Gate Facades
+        
+        
+        if(!Gate::allows('user_admin')){
+            return redirect()->route('dashboard')
+                    ->withErrors([
+                'authorizationError' => "You can't update products"
+            ]); 
+        }
+
+        if($data === null){
+            return redirect()->route('dashboard')
+                    ->withErrors([
+                        'dataError' => "Data not provided for update..."
+                ]);
+        }
+
+        // if(Gate::denies('user_admin')){
+        //     return redirect()->route('dashboard')
+        //             ->withErrors([
+        //         'authorization_error' => "You can't create products"
+        //     ]);
+        // }
+        // -----------------------
+        $result = '';
+        parse_str($data, $result);
+
+        $data = $result;
+        return view('product-update')->with('product', $data);
+    }
 
 }
