@@ -9,7 +9,20 @@
     <div class="py-12">
         @if(session()->get('success'))
             <div class="bg-green-600">
+
                 {{ session()->get('success') }}
+            </div>
+        @endif
+        
+        @error('dataError')
+            <div class="bg-green-600">
+                {{ $message }}
+            </div>
+        @endif
+        
+        @error('authorizationError')
+            <div class="bg-green-600">
+                {{ $message }}
             </div>
         @endif
 
@@ -34,4 +47,10 @@
             </div>
         </div>
     </div>
+
+    {{-- @if($errors->any())
+        <div class="bg-red-600">
+            {{ dd($errors->all()) }}
+        </div>
+    @endif --}}
 </x-app-layout>
