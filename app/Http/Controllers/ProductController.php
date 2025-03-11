@@ -147,5 +147,59 @@ class ProductController extends Controller
         $data = $result;
         return view('product-update')->with('product', $data);
     }
+    public function update(Request $request){
+        // -----------------------
+        // from Auth Facades
+        
+        // if(Auth::user()->can('user_admin')){
+        //     return "You can create products.";
+        // }
+        // -----------------------
+        
+        // -----------------------
+        // from Gate Facades
+        if(!Gate::allows('user_admin')){
+            return redirect()->route('dashboard')
+                    ->withErrors([
+                'authorization_error' => "You can't update products"
+            ]); 
+        }
+
+        // if(Gate::denies('user_admin')){
+        //     return redirect()->route('dashboard')
+        //             ->withErrors([
+        //         'authorization_error' => "You can't create products"
+        //     ]);
+        // }
+        // -----------------------
+        
+        // validate data
+        $request->validate([
+            'name' => ['required', 'string', 'between:3,100'],
+            'value' => ['required', 'numeric', 'min: 10', 'max: 1000']
+        ]); 
+        // update product
+        $product = Product::find($request->id);
+        if(!$product){
+            return redirect()->route('dashboard')
+                ->withErrors([
+                    'dataError' => 'Product not found...'
+                ]);
+        }
+        $product->name = $request->input('name');
+        $product->value = $request->input('value');
+
+        // store in db
+        $product->save();
+
+        // return to the view of dashboard
+        return redirect()->route('dashboard', http_build_query([
+            'id' => $product->id,
+            'success' => true,
+            'message' => 'Product updated successfully',
+            'from' => From::Update,
+            'product' => $product->toArray()
+        ]));
+    }
 
 }
