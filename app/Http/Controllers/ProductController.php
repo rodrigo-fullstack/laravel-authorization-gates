@@ -202,4 +202,28 @@ class ProductController extends Controller
         ]));
     }
 
+    public function delete(Request $request){
+        if(Auth::user()->cannot('user_admin')){
+            return redirect()->route('dashboard')
+                        ->withErrors([
+                            'authorizationError' => "You can't delete products..."
+                        ]);
+        }
+        // validate id
+        $request->validate(['id' => ['required', 'numeric']]);
+        
+        // delete with id
+        $product = Product::destroy($request->id);
+        // dd($product);
+
+        return redirect()->route('dashboard', http_build_query([
+            'id' => $request->id,
+            'success' => true,
+            'message' => 'Product deleted succesfully.',
+            'from' => From::Delete,
+        ]));
+        
+    }
+
+
 }
