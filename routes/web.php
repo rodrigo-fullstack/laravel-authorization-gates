@@ -11,6 +11,7 @@ Route::get('/', function () {
 Route::get('/dashboard/{data?}', [ProductController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/products/update/{data?}', [ProductController::class, 'change'])->middleware(['auth', 'verified'])->name('product.update');
 Route::post('/products/update', [ProductController::class, 'update'])->middleware(['auth', 'verified'])->name('product.update.submit');
+Route::delete('/products/delete', [ProductController::class, 'delete'])->middleware(['auth', 'verified'])->name('product.delete.submit');
 
 Route::get('/products/create', [ProductController::class, 'create'])->middleware(['auth', 'verified'])->name('product.create');
 
