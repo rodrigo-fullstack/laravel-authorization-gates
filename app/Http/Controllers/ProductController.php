@@ -141,6 +141,7 @@ class ProductController extends Controller
     public function store(Request $request){
         // -----------------------
         // from Auth Facades
+        // de Facade Auth 
         
         // if(Auth::user()->can('user_admin')){
         //     return "You can create products.";
@@ -149,6 +150,7 @@ class ProductController extends Controller
         
         // -----------------------
         // from Gate Facades
+        // De Facade Gates
         // if(Gate::allows('user_admin')){
         //     return "You can create products.";
         // }
@@ -161,21 +163,17 @@ class ProductController extends Controller
         }
         // -----------------------
         
-        // 1. validate data
         $request->validate([
             'name' => ['required', 'string', 'between:3,100'],
             'value' => ['required', 'numeric', 'min: 10', 'max: 1000']
         ]);
-        // create new product
         $product = new Product;
         $product->name = $request->input('name');
         $product->value = $request->input('value');
 
-        // store in db
         $product->save();
 
         
-        // return to the view of dashboard
         return redirect()->route('dashboard', http_build_query([
             'success' => true,
             'message' => 'Product created successfully',

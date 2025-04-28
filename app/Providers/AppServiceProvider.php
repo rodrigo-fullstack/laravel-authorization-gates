@@ -21,7 +21,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // can create product, update and delete
+        // Pode criar, atualizar e deletar produtos
+        // Can create product, update and delete
         Gate::define('user_admin', function(User $user){
             return $user->role === 'admin';
         });
